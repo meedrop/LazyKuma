@@ -51,11 +51,12 @@
 
             <br />
 
-            <!-- sidebar menu -->
+            <!-- 左边菜单栏 -->
             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
               <div class="menu_section">
                 <h3>管理员</h3>
                 <p> &nbsp </p>
+                <!-- 左边菜单栏列表-->
                 <ul class="nav side-menu">
                   <li><a><i class="fa fa-home"></i> 用户管理 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
@@ -76,9 +77,10 @@
                     </ul>
                   </li>
                 </ul>
+                <!-- /左边菜单栏列表-->
               </div>
             </div>
-            <!-- /sidebar menu -->
+            <!-- /左边菜单栏 -->
           </div>
         </div>
 
@@ -179,11 +181,27 @@
         </div>
         <!-- /top navigation -->
 
-        <!-- page content -->
+        <!-- 右侧页面内容 -->
         <div class="right_col" role="main">
+          <!--右边第二层面包导航-->
+          <div class="row wrapper border-bottom white-bg page-heading">
+              <div class="col-sm-12">
+                  <ol class="breadcrumb">
+                      <li>
+                          <a href="/">仪表盘</a>
+                      </li>
+                      <li>
+                          <a href="/">
+                          {% block breadcrumb %}
+                          {% endblock %}
 
+                          </a>
+                      </li>
+                  </ol>
+              </div>
+          </div> <!--右边导航结束-->
         </div>
-        <!-- /page content -->
+        <!-- /右侧页面内容 -->
 
         <!-- footer content -->
         <footer>

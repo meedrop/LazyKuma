@@ -17,9 +17,9 @@ class DB(object):
         self.user = config.db_user
         self.passwd = config.db_password
         self.pool = PooledDB \
-            (mysql,mincache=4,maxcached=10,\
+            (mysql,mincached=4,maxcached=10,\
              host=self.host,db=self.name,user=self.user,passwd=self.passwd,\
-             setsession=['SET AUTOCOMMIT=1'],charset="utf-8")
+             setsession=['SET AUTOCOMMIT=1'],charset="utf8")
 
     def connect_db(self):
         self.db = self.pool.connection()
@@ -38,13 +38,16 @@ class DB(object):
         self.connect_db()
         '''where以这种格式传递过来：where = {'username':jack,"password":'123456'}
         处理后应该是这样子['username="jack"','password="123456"']'''
-        content = ['k="v"' for k,v in where.items()]
+        content = ['%s="%s"' % (k,v) for k,v in where.items()]
+        print where
+        print content
         sql = "select %s from %s where %s" % (",".join(fields),table,'AND'.join(content))
+        print sql
         try:
             self.execute(sql)
-            result = self.cur.fetchone() # 执行结果只有一条使用fetchone拿出来
+            return self.cur.fetchone() # 执行结果只有一条使用fetchone拿出来
         except:
-            logs.info("Excute: %s,Error: %s") % (sql,traceback.format_exc())
+            logs.info("Excute: %s,Error: %s" % (sql,traceback.format_exc()))
         finally:
             self.close_db()
 

@@ -53,10 +53,12 @@ $('#loginButton').on('click',function(){
         console.log(data)
         if(data['code']==0){
             alert("登录成功")
+            location.href="/"
         }else{
             alert("登录失败")
         }
     })
+    return false
 })
 
 

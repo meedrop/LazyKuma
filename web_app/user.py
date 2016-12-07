@@ -11,21 +11,20 @@ from dbtool import DB
 salt = "$z%5^u3I"
 logs = logstdout.WriteLog('mylog')
 db_table = 'Users'
+
 # 个人中心页面
 @app.route('/')
-@app.route('/index')
+#@app.route('/index')
 @login_require.require
 def index():
-    logs = logstdout.WriteLog('mylog')
-    logs.info("this is a test")
-    return "this is test"
+    return render_template("base.html")
 
 # 用户登录页面
 @app.route('/login',methods=['GET','POST'])
 def login():
-    if request.method == "POST":          # 页面输入账号密码后post请求进行处理
+    if request.method == "POST":         # 页面输入账号密码后post请求进行处理
         user = dict((k,v[0]) for k,v in dict(request.form).items())
-        user['password'] = hashlib.md5(user['password']+salt).hexdigest() # 密码进行加密存储数据库，解密时也一样
+        user['password'] = hashlib.md5(user['password']+salt).hexdigest()   # 密码进行加密存储数据库，解密时也一样
         where = {'name':user['username']}
         fields = ['name','password','role','status']
         # 传给数据库类处理
@@ -46,8 +45,7 @@ def login():
         if result['status'] == 1:
             error = "account locked!"
             return json.dumps({'code':1,'error':error})
-        # 密码验证通过为用户增加session
-        session['name'] = result['name']
+        session['name'] = result['name']    # 密码验证通过为用户增加session
         session['role'] = result['role']
         sucess = "login successful!"
         return json.dumps({'code':0,'sucess':sucess})
