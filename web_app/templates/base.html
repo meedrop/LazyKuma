@@ -29,10 +29,12 @@
   <body class="nav-md">
     <div class="container body">
       <div class="main_container">
-        <div class="col-md-3 left_col">
+
+        <!-- sidebar content -->
+        <div class="col-md-3 left_col menu_fixed">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title"><i class="fa fa-tasks"></i> <span>运维作业平台</span></a>
+              <a href="/" class="site_title"><i class="fa fa-tasks"></i> <span>运维作业平台</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -51,38 +53,41 @@
 
             <br />
 
-            <!-- 左边菜单栏 -->
+            <!-- sidebar menu -->
             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
               <div class="menu_section">
                 <h3>管理员</h3>
                 <p> &nbsp </p>
-                <!-- 左边菜单栏列表-->
+
                 <ul class="nav side-menu">
-                  <li><a><i class="fa fa-home"></i> 用户管理 <span class="fa fa-chevron-down"></span></a>
+                  <li>
+                    <a><i class="fa fa-home"></i> 用户管理 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="index.html">个人中心</a></li>
+                      <li><a href="/">个人中心</a></li>
                       <li><a href="index2.html">查看用户</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-edit"></i> 版本变更 <span class="fa fa-chevron-down"></span></a>
+                  <li>
+                    <a><i class="fa fa-edit"></i> 版本变更 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="form.html">版本发布</a></li>
                       <li><a href="form_advanced.html">环境切换</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-heartbeat"></i> 应用管理 <span class="fa fa-chevron-down"></span></a>
+                  <li>
+                    <a><i class="fa fa-heartbeat"></i> 应用管理 <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="form.html">进程状态</a></li>
                       <li><a href="form_advanced.html">进程控制</a></li>
                     </ul>
                   </li>
                 </ul>
-                <!-- /左边菜单栏列表-->
               </div>
             </div>
-            <!-- /左边菜单栏 -->
+        <!-- /sidebar menu -->
           </div>
         </div>
+        <!-- /sidebar content -->
 
         <!-- top navigation -->
         <div class="top_nav">
@@ -94,86 +99,9 @@
 
               <ul class="nav navbar-nav navbar-right">
                 <li class="">
-                  <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="/static/img/img.png" alt="">William
-                    <span class=" fa fa-angle-down"></span>
+                  <a href="javascript:;" class="user-profile dropdown-toggle text-muted" data-toggle="dropdown" aria-expanded="false">
+                    <span class="fa fa-sign-out" aria-hidden="true"></span>Logout
                   </a>
-                  <ul class="dropdown-menu dropdown-usermenu pull-right">
-                    <li><a href="javascript:;"> Profile</a></li>
-                    <li>
-                      <a href="javascript:;">
-                        <span class="badge bg-red pull-right">50%</span>
-                        <span>Settings</span>
-                      </a>
-                    </li>
-                    <li><a href="javascript:;">Help</a></li>
-                    <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
-                  </ul>
-                </li>
-
-                <li role="presentation" class="dropdown">
-                  <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
-                    <i class="fa fa-envelope-o"></i>
-                    <span class="badge bg-green">6</span>
-                  </a>
-                  <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
-                    <li>
-                      <a>
-                        <span class="image"><img src="/static/img/img.png" alt="Profile Image" /></span>
-                        <span>
-                          <span>John Smith</span>
-                          <span class="time">3 mins ago</span>
-                        </span>
-                        <span class="message">
-                          Film festivals used to be do-or-die moments for movie makers. They were where...
-                        </span>
-                      </a>
-                    </li>
-                    <li>
-                      <a>
-                        <span class="image"><img src="/static/img/img.png" alt="Profile Image" /></span>
-                        <span>
-                          <span>John Smith</span>
-                          <span class="time">3 mins ago</span>
-                        </span>
-                        <span class="message">
-                          Film festivals used to be do-or-die moments for movie makers. They were where...
-                        </span>
-                      </a>
-                    </li>
-                    <li>
-                      <a>
-                        <span class="image"><img src="/static/img/img.png" alt="Profile Image" /></span>
-                        <span>
-                          <span>John Smith</span>
-                          <span class="time">3 mins ago</span>
-                        </span>
-                        <span class="message">
-                          Film festivals used to be do-or-die moments for movie makers. They were where...
-                        </span>
-                      </a>
-                    </li>
-                    <li>
-                      <a>
-                        <span class="image"><img src="/static/img/img.png" alt="Profile Image" /></span>
-                        <span>
-                          <span>John Smith</span>
-                          <span class="time">3 mins ago</span>
-                        </span>
-                        <span class="message">
-                          Film festivals used to be do-or-die moments for movie makers. They were where...
-                        </span>
-                      </a>
-                    </li>
-                    <li>
-                      <div class="text-center">
-                        <a>
-                          <strong>See All Alerts</strong>
-                          <i class="fa fa-angle-right"></i>
-                        </a>
-                      </div>
-                    </li>
-                  </ul>
                 </li>
               </ul>
             </nav>
@@ -181,27 +109,35 @@
         </div>
         <!-- /top navigation -->
 
-        <!-- 右侧页面内容 -->
+        <!-- page content -->
         <div class="right_col" role="main">
-          <!--右边第二层面包导航-->
-          <div class="row wrapper border-bottom white-bg page-heading">
-              <div class="col-sm-12">
-                  <ol class="breadcrumb">
-                      <li>
-                          <a href="/">仪表盘</a>
-                      </li>
-                      <li>
-                          <a href="/">
-                          {% block breadcrumb %}
-                          {% endblock %}
-
-                          </a>
-                      </li>
-                  </ol>
+          <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3>
+                  {% block pagetitle%}
+		          {% endblock%}
+                </h3>
               </div>
-          </div> <!--右边导航结束-->
+
+              <div class="title_right">
+                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="搜索..">
+                    <span class="input-group-btn">
+                              <button class="btn btn-default" type="button">Go!</button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+        {% block main %}
+        {% endblock %}
+          </div>
         </div>
-        <!-- /右侧页面内容 -->
+        <!-- /page content -->
+
 
         <!-- footer content -->
         <footer>
@@ -213,6 +149,10 @@
         <!-- /footer content -->
       </div>
     </div>
+    {% block js %}
+    {% endblock %}
+
+
 
     <!-- jQuery -->
     <script src="/static/vendors/jquery/dist/jquery.min.js"></script>

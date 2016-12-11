@@ -16,8 +16,14 @@ db_table = 'Users'
 @app.route('/')
 #@app.route('/index')
 @login_require.require
-def index():
-    return render_template("base.html")
+def userinfo():
+    name = session.get('name')
+    where = {'name':name}
+    fields = ['id','name','name_cn','email','mobile','role']
+    content = DB().check(db_table,fields,where)
+    user = dict((k,content[i]) for i,k in enumerate(fields))
+    print user
+    return render_template("userinfo.html",user=user)
 
 # 用户登录页面
 @app.route('/login',methods=['GET','POST'])
@@ -34,11 +40,12 @@ def login():
         user={}
         for i,k in enumerate(fields):
             result[i]=user[k]
+        得到user={'name':'jack','passowrd':'1','status':'1','role':'admin'}
         '''
-        result = dict((k,content[i]) for i,k in enumerate(fields))
-        if not result:
+        if not content:
             error = "username not exist!"
             return json.dumps({'code':1,'error':error}) # 返回code及error信息给前端jquery判断处理
+        result = dict((k,content[i]) for i,k in enumerate(fields))
         if result['password'] != user['password']:
             error = "password not right!"
             return json.dumps({'code':1,'error':error})
@@ -52,5 +59,14 @@ def login():
     if request.method == "GET":
         return render_template('login.html')  # 第一次打开页面为GET请求，返回一个空登录页面
 
+# 修改个人信息页面
+@app.route('/user/update',methods=['GET','POST'])
+@login_require.require
+def user_update():
+    if request.method == "POST": # 接收前端修改信息的post请求
+        pass
+        return json.dump({'code':1})
+    if request.method == "GET":  # 更新信息
+        pass
 
 # 访问login的时候，如果有session就跳到个人中心界面，没有就提示登录

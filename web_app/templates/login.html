@@ -21,7 +21,7 @@
             <div>
                 <h1 class="logo-name"><img src="/static/img/logo.png"></h1>
             </div>
-            
+
             <h2>Welcome CF Devops</h2>
             <form class="m-t" method="post" id="loginForm">
                 <div class="form-group">
@@ -52,10 +52,10 @@ $('#loginButton').on('click',function(){
         data=JSON.parse(data)
         console.log(data)
         if(data['code']==0){
-            alert("登录成功")
             location.href="/"
         }else{
-            alert("登录失败")
+            //alert(data['error'])
+            swal("",data['error'],"error");
         }
     })
     return false

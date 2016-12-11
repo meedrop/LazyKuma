@@ -1,0 +1,208 @@
+{% extends "base.html"%}
+{% block pagetitle %}
+个人中心
+{% endblock%}
+
+{% block main %}
+
+<!-- 用户信息 页面 内容 -->
+<div class="col-md-12 col-sm-12 col-xs-12">
+  <div class="x_panel">
+    <div class="x_title">
+      <h2>您的资料 <small> </small></h2>
+      <ul class="nav navbar-right panel_toolbox">
+        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Settings 1</a>
+            </li>
+            <li><a href="#">Settings 2</a>
+            </li>
+          </ul>
+        </li>
+        <li><a class="close-link"><i class="fa fa-close"></i></a>
+        </li>
+      </ul>
+      <div class="clearfix"></div>
+    </div> <!-- x_title -->
+
+    <!-- 表格 内容 -->
+    <div class="x_content">
+      <table class="table table-bordered">
+        <tr>
+          <br/>
+          <td style="vertical-align:middle; text-align:center;"><h2>{{user.name}}</h2></td>
+          <td>
+            <br/>
+            <table class="table table-bordered table-striped table-hover">
+              <tr>
+                <td>中文名</td>
+                <td>{{user.name_cn}}</td>
+              </tr>
+
+              <tr>
+                <td>邮箱</td>
+                <td>{{user.email}}</td>
+              </tr>
+
+              <tr>
+                <td>手机</td>
+                <td>{{user.mobile}}</td>
+              </tr>
+
+              <tr>
+                <td>角色</td>
+                <td>
+                  {% if user.role == 'admin' %}
+                    管理员
+                  {% else %}
+                    普通用户
+                  {% endif %}
+                </td>
+              </tr>
+
+            </table>
+          </td>
+        </tr>
+      </table>
+      <!-- /表格 内容 -->
+
+      <!-- 模态窗 -->
+	  <!-- 更新信息 模态窗 -->
+      <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#chpwdModal">
+        更新信息
+      </button>
+      <div class="modal fade" id="chpwdModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                  <h4 class="modal-title">更新信息</h4>
+                </div>
+                <div class="modal-body">
+                  <form id="updateOneForm" class="form-horizontal form-label-left">
+                      <!-- name input -->
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">用户名</label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                          <input type="text" class="form-control" disabled="disabled" value="{{user.name}}">
+                        </div>
+                      </div>
+                      <!-- /name input -->
+                      <!-- name_cn input -->
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">中文名</label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                          <input type="text" class="form-control" value="{{user.name_cn}}">
+                        </div>
+                      </div>
+                      <!-- /name_cn input -->
+                      <!-- email input -->
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">邮箱</label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                          <input type="text" class="form-control" value="{{user.email}}">
+                        </div>
+                      </div>
+                      <!-- /email input -->
+                      <!-- mobile input -->
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">手机号</label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                          <input type="text" class="form-control" value="{{user.mobile}}">
+                        </div>
+                      </div>
+                      <!-- /mobile input -->
+                      <!-- role input -->
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">角色</label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                          {% if user.role == 'admin' %}
+                          <input type="text" class="form-control" disabled="disabled" value=管理员>
+                          {% else %}
+                          <input type="text" class="form-control" disabled="disabled" value=普通用户>
+                          {% endif %}
+                        </div>
+                      </div>
+                      <!-- /role input -->
+                  </form>
+                </div> <!-- /modal-body -->
+                <div class="modal-footer">
+                  <button data-dismiss="modal" class="btn btn-default" type="button">关闭</button>
+                  <button id="updateOnebutton" class="btn btn-primary" type="button">保存提交</button>
+                </div>
+              </div> <!-- /modal-content -->>
+            </div> <!-- /modal-dialog -->
+      </div>
+      <!-- /更新信息 模态窗 -->
+
+      <!-- 修改密码 模态窗 -->
+      <button type="button" class="btn btn-warning pull-right" data-toggle="modal" data-target="#chinfoModal">
+       修改密码
+      </button>
+      <div class="modal fade" id="chinfoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                  <h4 class="modal-title">提问</h4>
+                </div>
+                <div class="modal-body">
+                  <p>问题描述</p>
+                  <textarea class="form-control"></textarea>
+                </div>
+                <div class="modal-footer">
+                  <button data-dismiss="modal" class="btn btn-default" type="button">关闭</button>
+                  <button class="btn btn-primary" type="button">保存提交</button>
+                </div>
+              </div>
+            </div>
+      </div>
+      <!-- /修改密码 模态窗 -->
+      <!-- /模态窗 -->
+
+    </div> <!-- /x_content -->
+  </div> <!-- /x_panel -->
+</div>
+<!-- /用户信息 页面 内容 -->
+
+{% endblock %}
+
+{% block js %}
+<script>
+//更新个人信息模态窗
+$("#updateOnebutton").on('click', function () {
+  var str = $("#updateOneForm").serialize()
+  var data =
+})
+
+
+
+</script>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
