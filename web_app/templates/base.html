@@ -24,6 +24,10 @@
     <link href="/static/build/css/custom.min.css" rel="stylesheet">
     <!-- Set default chinese fonts -->
     <link rel="stylesheet" href="/static/img/main.css">
+    <!--sweetAlert -->
+    <link href="/static/vendors/alert/sweet-alert.css" rel="stylesheet">
+
+
   </head>
 
   <body class="nav-md">
@@ -149,10 +153,6 @@
         <!-- /footer content -->
       </div>
     </div>
-    {% block js %}
-    {% endblock %}
-
-
 
     <!-- jQuery -->
     <script src="/static/vendors/jquery/dist/jquery.min.js"></script>
@@ -197,7 +197,8 @@
     <script src="/static/js/maps/jquery-jvectormap-us-aea-en.js"></script>
     <script src="/static/js/maps/gdp-data.js"></script>
     <!-- /jVectorMap -->
-
+    <!--sweetAlert -->
+    <script src="/static/vendors/alert/sweet-alert.min.js"></script>
     <!-- Skycons -->
     <!-- /Skycons -->
 
@@ -209,5 +210,7 @@
 
     <!-- gauge.js -->
     <!-- /gauge.js -->
+    {% block js %}
+    {% endblock %}
   </body>
 </html>

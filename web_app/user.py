@@ -64,8 +64,10 @@ def login():
 @login_require.require
 def user_update():
     if request.method == "POST": # 接收前端修改信息的post请求
-        pass
-        return json.dump({'code':1})
+        user=dict((k,v[0]) for k,v in dict(request.form).items())
+        # user的内容{'id'=''}
+        print user
+        return json.dumps({'code':0})
     if request.method == "GET":  # 更新信息
         pass
 

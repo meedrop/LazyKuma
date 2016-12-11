@@ -71,10 +71,10 @@
 
       <!-- 模态窗 -->
 	  <!-- 更新信息 模态窗 -->
-      <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#chpwdModal">
+      <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#chinfoModal">
         更新信息
       </button>
-      <div class="modal fade" id="chpwdModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal fade" id="chinfoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
@@ -83,66 +83,69 @@
                 </div>
                 <div class="modal-body">
                   <form id="updateOneForm" class="form-horizontal form-label-left">
-                      <!-- name input -->
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">用户名</label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" disabled="disabled" value="{{user.name}}">
-                        </div>
+                    <!-- id input -->
+                    <input type="hidden" name="id" value="{{user.id}}">
+                    <!-- /id input -->
+                    <!-- name input -->
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">用户名</label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <input type="text" class="form-control" disabled="disabled" value="{{user.name}}">
                       </div>
-                      <!-- /name input -->
-                      <!-- name_cn input -->
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">中文名</label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" value="{{user.name_cn}}">
-                        </div>
+                    </div>
+                    <!-- /name input -->
+                    <!-- name_cn input -->
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">中文名</label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <input type="text" class="form-control" value="{{user.name_cn}}">
                       </div>
-                      <!-- /name_cn input -->
-                      <!-- email input -->
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">邮箱</label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" value="{{user.email}}">
-                        </div>
+                    </div>
+                    <!-- /name_cn input -->
+                    <!-- email input -->
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">邮箱</label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <input type="text" class="form-control" value="{{user.email}}">
                       </div>
-                      <!-- /email input -->
-                      <!-- mobile input -->
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">手机号</label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" value="{{user.mobile}}">
-                        </div>
+                    </div>
+                    <!-- /email input -->
+                    <!-- mobile input -->
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">手机号</label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <input type="text" class="form-control" value="{{user.mobile}}">
                       </div>
-                      <!-- /mobile input -->
-                      <!-- role input -->
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">角色</label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          {% if user.role == 'admin' %}
-                          <input type="text" class="form-control" disabled="disabled" value=管理员>
-                          {% else %}
-                          <input type="text" class="form-control" disabled="disabled" value=普通用户>
-                          {% endif %}
-                        </div>
+                    </div>
+                    <!-- /mobile input -->
+                    <!-- role input -->
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">角色</label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        {% if user.role == 'admin' %}
+                        <input type="text" class="form-control" disabled="disabled" value=管理员>
+                        {% else %}
+                        <input type="text" class="form-control" disabled="disabled" value=普通用户>
+                        {% endif %}
                       </div>
-                      <!-- /role input -->
+                    </div>
+                    <!-- /role input -->
                   </form>
                 </div> <!-- /modal-body -->
                 <div class="modal-footer">
                   <button data-dismiss="modal" class="btn btn-default" type="button">关闭</button>
                   <button id="updateOnebutton" class="btn btn-primary" type="button">保存提交</button>
                 </div>
-              </div> <!-- /modal-content -->>
+              </div> <!-- /modal-content -->
             </div> <!-- /modal-dialog -->
       </div>
       <!-- /更新信息 模态窗 -->
 
       <!-- 修改密码 模态窗 -->
-      <button type="button" class="btn btn-warning pull-right" data-toggle="modal" data-target="#chinfoModal">
+      <button type="button" class="btn btn-warning pull-right" data-toggle="modal" data-target="#chpwdModal">
        修改密码
       </button>
-      <div class="modal fade" id="chinfoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal fade" id="chpwdModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
@@ -162,28 +165,44 @@
       </div>
       <!-- /修改密码 模态窗 -->
       <!-- /模态窗 -->
-
     </div> <!-- /x_content -->
   </div> <!-- /x_panel -->
 </div>
 <!-- /用户信息 页面 内容 -->
 
-{% endblock %}
 
+{% endblock %}
 {% block js %}
+
 <script>
 //更新个人信息模态窗
-$("#updateOnebutton").on('click', function () {
+$("#updateOnebutton").on('click',function(){
   var str = $("#updateOneForm").serialize()
-  var data =
+  console.log(str)
+  $.post('/user/update',str,function(data){
+    data = JSON.parse(data)
+    if (data['code'] == 0){
+      //$("#chinfoModal").modal('hide')
+      //swal("","更新成功","success");
+      //location.reload()
+      swal({
+        title: "",
+        text: "successful",
+        type:"success",
+        confirmButtonText:"ok"
+      }, function(){
+        $("#chinfoModal").modal('hide')
+        location.reload()
+      })
+    }else{
+      swal("","更新失败","error");
+    }
+  })
+  return false
 })
-
-
-
-</script>
+</script> -->
 
 {% endblock %}
-
 
 
 
