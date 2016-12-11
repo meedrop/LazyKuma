@@ -65,9 +65,13 @@ def login():
 def user_update():
     if request.method == "POST": # 接收前端修改信息的post请求
         user=dict((k,v[0]) for k,v in dict(request.form).items())
-        # user的内容{'id'=''}
-        print user
-        return json.dumps({'code':0})
+        where = {'id':user['id']}
+        #fields = ['name_cn','email','mobile','role']
+        content = DB().update(db_table,user,where)
+        if content == 0:
+            return json.dumps({'code':0,'info':'update successful!'})
+        else:
+            return json.dumps({'code':1,'error':'update error!'})
     if request.method == "GET":  # 更新信息
         pass
 

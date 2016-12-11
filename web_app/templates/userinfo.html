@@ -90,15 +90,15 @@
                     <div class="form-group">
                       <label class="control-label col-md-3 col-sm-3 col-xs-12">用户名</label>
                       <div class="col-md-9 col-sm-9 col-xs-12">
-                        <input type="text" class="form-control" disabled="disabled" value="{{user.name}}">
+                        <input type="text" class="form-control" disabled="disabled" name="name" value="{{user.name}}">
                       </div>
-                    </div>
+                     </div>
                     <!-- /name input -->
                     <!-- name_cn input -->
                     <div class="form-group">
                       <label class="control-label col-md-3 col-sm-3 col-xs-12">中文名</label>
                       <div class="col-md-9 col-sm-9 col-xs-12">
-                        <input type="text" class="form-control" value="{{user.name_cn}}">
+                        <input type="text" class="form-control" name="name_cn" value="{{user.name_cn}}">
                       </div>
                     </div>
                     <!-- /name_cn input -->
@@ -106,7 +106,7 @@
                     <div class="form-group">
                       <label class="control-label col-md-3 col-sm-3 col-xs-12">邮箱</label>
                       <div class="col-md-9 col-sm-9 col-xs-12">
-                        <input type="text" class="form-control" value="{{user.email}}">
+                        <input type="text" class="form-control" name="email" value="{{user.email}}">
                       </div>
                     </div>
                     <!-- /email input -->
@@ -114,7 +114,7 @@
                     <div class="form-group">
                       <label class="control-label col-md-3 col-sm-3 col-xs-12">手机号</label>
                       <div class="col-md-9 col-sm-9 col-xs-12">
-                        <input type="text" class="form-control" value="{{user.mobile}}">
+                        <input type="text" class="form-control" name="mobile" value="{{user.mobile}}">
                       </div>
                     </div>
                     <!-- /mobile input -->
@@ -123,9 +123,9 @@
                       <label class="control-label col-md-3 col-sm-3 col-xs-12">角色</label>
                       <div class="col-md-9 col-sm-9 col-xs-12">
                         {% if user.role == 'admin' %}
-                        <input type="text" class="form-control" disabled="disabled" value=管理员>
+                        <input type="text" class="form-control" disabled="disabled" name="role" value=管理员>
                         {% else %}
-                        <input type="text" class="form-control" disabled="disabled" value=普通用户>
+                        <input type="text" class="form-control" disabled="disabled" name="role" value=普通用户>
                         {% endif %}
                       </div>
                     </div>
@@ -150,15 +150,42 @@
               <div class="modal-content">
                 <div class="modal-header">
                   <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-                  <h4 class="modal-title">提问</h4>
+                  <h4 class="modal-title">修改密码</h4>
                 </div>
                 <div class="modal-body">
-                  <p>问题描述</p>
-                  <textarea class="form-control"></textarea>
-                </div>
+                  <form id="chpwdOneForm" class="form-horizontal form-label-left">
+                    <!-- id input -->
+                    <input type="hidden" name="id" value="{{user.id}}">
+                    <!-- /id input -->
+                    <!-- oldpwd input -->
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">旧密码</label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <input type="password" class="form-control" name="oldpwd" value="">
+                      </div>
+                     </div>
+                    <!-- /oldpwd input -->
+                    <!-- newpwd input -->
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">新密码</label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <input type="password" class="form-control" name="newpwd" value="">
+                      </div>
+                    </div>
+                    <!-- /newpwd input -->
+                   <!-- ackpwd input -->
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">确认密码</label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <input type="password" class="form-control" name="ackpwd" value="">
+                      </div>
+                    </div>
+                    <!-- /ackpwd input -->
+                  </form>
+                </div> <!-- /modal-body -->
                 <div class="modal-footer">
                   <button data-dismiss="modal" class="btn btn-default" type="button">关闭</button>
-                  <button class="btn btn-primary" type="button">保存提交</button>
+                  <button class="btn btn-primary" id="chpwdOnebutton" type="button">保存提交</button>
                 </div>
               </div>
             </div>
@@ -172,9 +199,10 @@
 
 
 {% endblock %}
-{% block js %}
 
+{% block js %}
 <script>
+
 //更新个人信息模态窗
 $("#updateOnebutton").on('click',function(){
   var str = $("#updateOneForm").serialize()
@@ -189,39 +217,22 @@ $("#updateOnebutton").on('click',function(){
         title: "",
         text: "successful",
         type:"success",
-        confirmButtonText:"ok"
+        confirmButtonText:"确定"
       }, function(){
         $("#chinfoModal").modal('hide')
         location.reload()
       })
     }else{
-      swal("","更新失败","error");
+      swal({
+        title: "",
+        text: "error",
+        type:"error",
+        confirmButtonText:"确定"
+      })
     }
   })
   return false
 })
-</script> -->
-
+</script>
 {% endblock %}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

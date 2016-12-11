@@ -36,19 +36,32 @@ class DB(object):
     # 匹配某个字段是否在数据库匹配
     def check(self,table,fields,where):
         self.connect_db()
-        '''where以这种格式传递过来：where = {'username':jack,"password":'123456'}
-        处理后应该是这样子['username="jack"','password="123456"']'''
+        '''where以这种格式传递过来：where = {'name':jack,"password":'123456'}
+        处理后应该是这样子['name="jack"','password="123456"']'''
         content = ['%s="%s"' % (k,v) for k,v in where.items()]
         print where
         print content
-        sql = "select %s from %s where %s" % (",".join(fields),table,'AND'.join(content))
+        sql = "select %s from %s where %s" % (",".join(fields),table,"AND".join(content))
         print sql
         try:
             self.execute(sql)
             return self.cur.fetchone() # 执行结果只有一条使用fetchone拿出来
         except:
-            logs.info("Excute: %s,Error: %s" % (sql,traceback.format_exc()))
+            logs.error("Excute: %s,Error: %s" % (sql,traceback.format_exc()))
         finally:
             self.close_db()
 
+    def update(self,table,sets,where):
+        self.connect_db()
+        content1 = ['%s="%s"' % (k,v) for k,v in where.items()]
+        content2 = ['%s="%s"' % (k,v) for k,v in sets.items()] # sets的格式{'name':jack,"name_cn":'123456',...}
+        sql = "update %s set %s where %s" % (table,",".join(content2),"AND".join(content1))
+        print sql
+        try:
+            self.execute(sql)
+            return 0
+        except:
+            logs.error("Excute: %s,Error: %s" % (sql,traceback.format_exc()))
+        finally:
+            self.close_db()
 
