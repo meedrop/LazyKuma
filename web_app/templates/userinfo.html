@@ -173,7 +173,7 @@
                       </div>
                     </div>
                     <!-- /newpwd input -->
-                   <!-- ackpwd input -->
+                    <!-- ackpwd input -->
                     <div class="form-group">
                       <label class="control-label col-md-3 col-sm-3 col-xs-12">确认密码</label>
                       <div class="col-md-9 col-sm-9 col-xs-12">
@@ -203,10 +203,9 @@
 {% block js %}
 <script>
 
-//更新个人信息模态窗
+//更新个人信息
 $("#updateOnebutton").on('click',function(){
   var str = $("#updateOneForm").serialize()
-  console.log(str)
   $.post('/user/update',str,function(data){
     data = JSON.parse(data)
     if (data['code'] == 0){
@@ -226,6 +225,33 @@ $("#updateOnebutton").on('click',function(){
       swal({
         title: "",
         text: "error",
+        type:"error",
+        confirmButtonText:"确定"
+      })
+    }
+  })
+  return false
+})
+
+//修改个人密码
+$("#chpwdOnebutton").on('click',function(){
+  var str = $("#chpwdOneForm").serialize()
+  $.post('/user/updateOnepwd',str,function(data){
+    data = JSON.parse(data)
+    if (data['code'] == 0){
+      swal({
+        title: "",
+        text: "successful",
+        type:"success",
+        confirmButtonText:"确定"
+      }, function(){
+        $("#chpwdModal").modal('hide')
+        location.reload()
+      })
+    }else{
+      swal({
+        title: "",
+        text: data['error'],
         type:"error",
         confirmButtonText:"确定"
       })

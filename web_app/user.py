@@ -43,23 +43,23 @@ def login():
         得到user={'name':'jack','passowrd':'1','status':'1','role':'admin'}
         '''
         if not content:
-            error = "username not exist!"
+            error = "用户名不存在"
             return json.dumps({'code':1,'error':error}) # 返回code及error信息给前端jquery判断处理
         result = dict((k,content[i]) for i,k in enumerate(fields))
         if result['password'] != user['password']:
-            error = "password not right!"
+            error = "密码错误"
             return json.dumps({'code':1,'error':error})
         if result['status'] == 1:
-            error = "account locked!"
+            error = "账户被锁定"
             return json.dumps({'code':1,'error':error})
         session['name'] = result['name']    # 密码验证通过为用户增加session
         session['role'] = result['role']
-        sucess = "login successful!"
-        return json.dumps({'code':0,'sucess':sucess})
+        info = "登录成功"
+        return json.dumps({'code':0,'info':info})
     if request.method == "GET":
         return render_template('login.html')  # 第一次打开页面为GET请求，返回一个空登录页面
 
-# 修改个人信息页面
+# 更新个人信息
 @app.route('/user/update',methods=['GET','POST'])
 @login_require.require
 def user_update():
@@ -69,10 +69,44 @@ def user_update():
         #fields = ['name_cn','email','mobile','role']
         content = DB().update(db_table,user,where)
         if content == 0:
-            return json.dumps({'code':0,'info':'update successful!'})
+            return json.dumps({'code':0,'info':'更新成功'})
         else:
-            return json.dumps({'code':1,'error':'update error!'})
+            return json.dumps({'code':1,'error':'更新错误'})
     if request.method == "GET":  # 更新信息
         pass
 
+# 个人中心页面更新密码
+@app.route('/user/updateOnepwd',methods=['GET','POST'])
+@login_require.require
+def user_updateOnepwd():
+    if request.method == "POST":
+        pwds = dict((k,v[0]) for k,v in dict(request.form).items())
+        fields = ['password']
+        where = {'id':pwds['id']}
+        content1 = DB().check(db_table,fields,where)
+        result = dict((k,content1[i]) for i,k in enumerate(fields))
+        pwds['oldpwd'] = hashlib.md5(pwds['oldpwd']+salt).hexdigest()
+        if pwds['oldpwd'] != result['password']: # 旧密码匹配
+            return json.dumps({'code':1,'error':'旧密码不正确'})
+        elif pwds['newpwd'] != pwds['ackpwd']: # 新密码匹配
+            return json.dumps({'code':1,'error':'确认密码不一致'})
+        else:
+            newpwd = {'password':hashlib.md5(pwds['newpwd']+salt).hexdigest()}
+            content2 = DB().update(db_table,newpwd,where)
+            if content2 == 0:
+                return json.dumps({'code':0,'info':'更新成功'})
+            else:
+                return json.dumps({'code':1,'error':'更新错误'})
+
+@app.route('/user/userlist',methods=['GET','POST'])
+@login_require.require
+def user_userlist():
+    return render_template('userlist.html')
+
+#oldpwd,newpwd,ackpwd
+
+
+
+
 # 访问login的时候，如果有session就跳到个人中心界面，没有就提示登录
+# 增加账户锁定功能
