@@ -17,8 +17,8 @@ class DB(object):
         self.user = config.db_user
         self.passwd = config.db_password
         self.pool = PooledDB \
-            (mysql,mincached=4,maxcached=10,\
-             host=self.host,db=self.name,user=self.user,passwd=self.passwd,\
+            (mysql,mincached=4,maxcached=10,
+             host=self.host,db=self.name,user=self.user,passwd=self.passwd,
              setsession=['SET AUTOCOMMIT=1'],charset="utf8")
 
     def connect_db(self):
@@ -33,7 +33,20 @@ class DB(object):
         self.connect_db()
         return self.cur.execute(sql)
 
-    # 匹配某个字段是否在数据库匹配
+    # 查询 不匹配where操作
+    def select_all(self,table,fields):
+        self.connect_db()
+        sql = "select %s from %s" % (",".join(fields),table)
+        print sql
+        try:
+            self.execute(sql)
+            return self.cur.fetchall() # 返回执行的所有结果
+        except:
+            logs.error("Excute: %s,Error: %s" % (sql,traceback.format_exc()))
+        finally:
+            self.close_db()
+
+    # 查询 匹配WHERE操作
     def check(self,table,fields,where):
         self.connect_db()
         '''where以这种格式传递过来：where = {'name':jack,"password":'123456'}
@@ -51,6 +64,7 @@ class DB(object):
         finally:
             self.close_db()
 
+    # 更新操作
     def update(self,table,sets,where):
         self.connect_db()
         content1 = ['%s="%s"' % (k,v) for k,v in where.items()]
@@ -64,4 +78,6 @@ class DB(object):
             logs.error("Excute: %s,Error: %s" % (sql,traceback.format_exc()))
         finally:
             self.close_db()
+
+    # 删除操作
 
