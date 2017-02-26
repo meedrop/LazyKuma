@@ -27,9 +27,7 @@
         <div class="clearfix"></div>
       </div> <!-- x_title -->
       <div class="x_content">
-        <p class="text-muted font-13 m-b-30">
-          列表详情
-        </p>
+        <button type="button" class="btn btn-success pull-right">添加用户</button>
         <br>
         <!-- 用户列表 表格 -->
         <table id="datatable" class="table table-striped table-bordered">
@@ -123,7 +121,7 @@
                     <div class="form-group">
                       <label class="control-label col-md-3 col-sm-3 col-xs-12">角色</label>
                       <div class="col-md-9 col-sm-9 col-xs-12">
-			            <select  id="u_role" class="form-control">
+			            <select  id="u_role" class="form-control" name="role">
 				            <option value="admin">管理员</option>
                             <option value="common">普通用户</option>
                         </select>
@@ -134,9 +132,9 @@
                     <div class="form-group">
                       <label class="control-label col-md-3 col-sm-3 col-xs-12">状态</label>
                       <div class="col-md-9 col-sm-9 col-xs-12">
-			            <select  id="u_status" class="form-control">
-				            <option value="0">启用</option>
-                            <option value="1">锁定</option>
+			            <select  id="u_status" class="form-control" name="status">
+				            <option value="0" >启用</option>
+                            <option value="1" >锁定</option>
                         </select>
                       </div>
                     </div>
@@ -223,7 +221,7 @@ $('.update').on("click",function(){
         $('#u_email').val(data["email"])
         $('#u_role').val(data["role"])
         $('#u_status').val(data["status"])
-        $('#chinfoModal').modal('show')
+        $('#chinfoModal').modal('show')  //渲染完毕模态窗数据后展示模态窗
     })
 })
 
@@ -233,9 +231,6 @@ $("#updateOnebutton").on('click',function(){
   $.post('/user/update',str,function(data){
     data = JSON.parse(data)
     if (data['code'] == 0){
-      //$("#chinfoModal").modal('hide')
-      //swal("","更新成功","success");
-      //location.reload()
       swal({
         title: "",
         text: "successful",
