@@ -92,3 +92,17 @@ class DB(object):
             logs.error("Excute: %s,Error: %s" % (sql,traceback.format_exc()))
         finally:
             self.close_db()
+
+    # 插入操作
+    def insert(self,table,fields,values):
+        self.connect_db()
+        content = ['"%s"' % values[x] for x in fields]
+        sql = "INSERT INTO %s (%s) VALUES (%s)" % (table,",".join(fields),",".join(content))
+        try:
+            self.execute(sql)
+            logs.info("Run sql: %s" % sql)
+            return 0
+        except:
+            logs.error("Excute: %s,Error: %s" % (sql,traceback.format_exc()))
+        finally:
+            self.close_db()

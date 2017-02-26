@@ -105,6 +105,7 @@ def user_updateOnepwd():
             else:
                 return json.dumps({'code':1,'error':'更新错误'})
 
+# 用户列表页面
 @app.route('/user/userlist',methods=['GET','POST'])
 @login_require.require
 def user_userlist():
@@ -125,6 +126,7 @@ def user_userlist():
         # 获取所有用户信息后 在页面展示
         return render_template('userlist.html',users=users)
 
+# 删除用户
 @app.route('/user/delete',methods=['GET','POST'])
 @login_require.require
 def delete_user():
@@ -139,6 +141,31 @@ def delete_user():
             return json.dumps({'code':0,'info':'删除成功'})
         else:
             return json.dumps({'code':1,'error':'删除失败'})
+
+# 添加用户
+@app.route('/user/add',methods=['GET','POST'])
+@login_require.require
+def add_uer():
+    if session["role"] != "admin":
+        return redirect('/')
+    if request.method == "GET":
+        return render_template("adduser.html")
+    if request.method == "POST":
+        user = dict((k,v[0]) for k,v in dict(request.form).items())
+        fields = ['name','name_cn','password','email','mobile','role','status']
+        content = DB().insert(db_table,fields,user)
+        if content == 0:
+            return json.dumps({'code':0,'info':'添加成功'})
+        else:
+            return json.dumps({'code':1,'error':'添加失败'})
+
+# 退出登录
+@app.route('/user/logout',methods=['GET','POST'])
+def logout():
+    if session['name'] or session['role']:
+        session.pop('name',None)
+        session.pop('role',None)
+    return redirect('/login')
 
 #oldpwd,newpwd,ackpwd
 
