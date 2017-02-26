@@ -34,12 +34,12 @@ class DB(object):
         return self.cur.execute(sql)
 
     # 查询 不匹配where操作
-    def select_all(self,table,fields):
+    def select_NoWhere(self,table,fields):
         self.connect_db()
-        sql = "select %s from %s" % (",".join(fields),table)
-        print sql
+        sql = "SELECT %s FROM %s" % (",".join(fields),table)
         try:
             self.execute(sql)
+            logs.info("Run sql: %s" % sql)
             return self.cur.fetchall() # 返回执行的所有结果
         except:
             logs.error("Excute: %s,Error: %s" % (sql,traceback.format_exc()))
@@ -54,10 +54,10 @@ class DB(object):
         content = ['%s="%s"' % (k,v) for k,v in where.items()]
         print where
         print content
-        sql = "select %s from %s where %s" % (",".join(fields),table,"AND".join(content))
-        print sql
+        sql = "SELECT %s FROM %s WHERE %s" % (",".join(fields),table,"AND".join(content))
         try:
             self.execute(sql)
+            logs.info("Run sql: %s" % sql)
             return self.cur.fetchone() # 执行结果只有一条使用fetchone拿出来
         except:
             logs.error("Excute: %s,Error: %s" % (sql,traceback.format_exc()))
@@ -69,10 +69,10 @@ class DB(object):
         self.connect_db()
         content1 = ['%s="%s"' % (k,v) for k,v in where.items()]
         content2 = ['%s="%s"' % (k,v) for k,v in sets.items()] # sets的格式{'name':jack,"name_cn":'123456',...}
-        sql = "update %s set %s where %s" % (table,",".join(content2),"AND".join(content1))
-        print sql
+        sql = "UPDATE %s SET %s WHERE %s" % (table,",".join(content2),"AND".join(content1))
         try:
             self.execute(sql)
+            logs.info("Run sql: %s" % sql)
             return 0
         except:
             logs.error("Excute: %s,Error: %s" % (sql,traceback.format_exc()))
@@ -80,4 +80,15 @@ class DB(object):
             self.close_db()
 
     # 删除操作
-
+    def delete(self,table,where):
+        self.connect_db()
+        content = ['%s="%s"' % (k,v) for k,v in where.items()]
+        sql = "DELETE FROM %s WHERE %s" % (table,"AND".join(content))
+        try:
+            self.execute(sql)
+            logs.info("Run sql: %s" % sql)
+            return 0
+        except:
+            logs.error("Excute: %s,Error: %s" % (sql,traceback.format_exc()))
+        finally:
+            self.close_db()

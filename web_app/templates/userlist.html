@@ -1,6 +1,6 @@
 {% extends "base.html"%}
 {% block pagetitle %}
-用户管理
+用户列表
 {% endblock%}
 
 {% block main %}
@@ -8,7 +8,7 @@
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
-        <h2>Default Example <small>Users</small></h2>
+        <h2>列表详情</h2>
         <ul class="nav navbar-right panel_toolbox">
           <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
           </li>
@@ -25,51 +25,55 @@
           </li>
         </ul>
         <div class="clearfix"></div>
-      </div>
+      </div> <!-- x_title -->
       <div class="x_content">
         <p class="text-muted font-13 m-b-30">
-          DataTables has most features enabled by default, so all you need to do to use it with your own tables is to call the construction function: <code>$().DataTable();</code>
+          列表详情
         </p>
         <br>
+        <!-- 用户列表 表格 -->
         <table id="datatable" class="table table-striped table-bordered">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Position</th>
-              <th>Office</th>
-              <th>Age</th>
-              <th>Start date</th>
-              <th>Salary</th>
+              <th class="text-center">用户名</th>
+              <th class="text-center">中文名</th>
+              <th class="text-center">角色</th>
+              <th class="text-center">邮箱</th>
+              <th class="text-center">手机</th>
+              <th class="text-center">状态</th>
+              <th class="text-center">操作</th>
             </tr>
           </thead>
 
           <tbody>
+          {% for user in users %}
             <tr>
-              <td>Brenden Wagner</td>
-              <td>Software Engineer</td>
-              <td>San Francisco</td>
-              <td>28</td>
-              <td>2011/06/07</td>
-              <td>$206,850</td>
+              <td class="text-center">{{user.name}}</td>
+              <td class="text-center">{{user.name_cn}}</td>
+              {% if user.role == "admin" %}
+                <td class="text-center">管理员</td>
+              {% else%}
+                <td class="text-center">普通用户</td>
+              {% endif %}
+              <td class="text-center">{{user.email}}</td>
+              <td class="text-center">{{user.mobile}}</td>
+              {% if user.status == 0 %}
+                <td class="text-center" style="color:limegreen">正常</td>
+              {% else %}
+                <td class="text-center" style="color:indianred">锁定</td>
+              {% endif %}
+              <td class="text-center">
+                <!-- 更新信息button -->
+                <button type="button" class="btn btn-info update" data-toggle="modal" data-target="#chinfoModal">更新</button>
+                <!-- 删除用户button -->
+                <button  data-id="{{user.id}}" type="button" class="btn btn-danger del">删除</button>
+              </td>
             </tr>
-            <tr>
-              <td>Gavin Cortez</td>
-              <td>Team Leader</td>
-              <td>San Francisco</td>
-              <td>22</td>
-              <td>2008/10/26</td>
-              <td>$235,500</td>
-            </tr>
-            <tr>
-              <td>Martena Mccray</td>
-              <td>Post-Sales support</td>
-              <td>Edinburgh</td>
-              <td>46</td>
-              <td>2011/03/09</td>
-              <td>$324,050</td>
-            </tr>
+          {% endfor %}
           </tbody>
         </table>
+        <!-- /用户列表 表格 -->
+
       </div> <!-- x_content -->
     </div> <!-- x_panel -->
   </div>
@@ -79,6 +83,7 @@
 
 {% block js %}
 <script>
+// datetable中文配置
 $('#datatable').dataTable({
         "bDestroy":true, //一旦datatable的数据有增加或者删除，会销毁原有的，重新获取
         "language": {
@@ -97,5 +102,35 @@ $('#datatable').dataTable({
         },
         "order": [[ 1, "asc" ]]
 });
+
+// 删除用户
+$('.del').on("click",function(){  //更新密码不能通过ID选择器，因为做了for循环，只能通过class里定义的类del来做
+  var user_id =  $(this).attr('data-id')
+  var url = "/user/delete?id=" + user_id
+  if(confirm("确认删除？")){
+    $.getJSON(url,function(data){
+      console.log(data)  //打印调试
+      if (data['code'] == 0){
+        swal({
+          title: "",
+          text: "successful",
+          type:"success",
+          confirmButtonText:"确定"
+        }, function(){
+          location.reload()
+        })
+      }else{
+        swal({
+          title: "",
+          text: "error",
+          type:"error",
+          confirmButtonText:"确定"
+        })
+      }
+    })
+  }
+})
+
 </script>
 {% endblock %}
+

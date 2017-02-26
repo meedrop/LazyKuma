@@ -53,7 +53,7 @@ def login():
             error = "账户被锁定"
             return json.dumps({'code':1,'error':error})
         session['name'] = result['name']    # 密码验证通过为用户增加session
-        session['role'] = result['role']
+        session['role'] = result['role']    # 获取全局的用户权限
         info = "登录成功"
         return json.dumps({'code':0,'info':info})
     if request.method == "GET":
@@ -64,7 +64,7 @@ def login():
 @login_require.require
 def user_update():
     if request.method == "POST": # 接收前端修改信息的post请求
-        user=dict((k,v[0]) for k,v in dict(request.form).items())
+        user = dict((k,v[0]) for k,v in dict(request.form).items())
         where = {'id':user['id']}
         #fields = ['name_cn','email','mobile','role']
         content = DB().update(db_table,user,where)
@@ -101,7 +101,37 @@ def user_updateOnepwd():
 @app.route('/user/userlist',methods=['GET','POST'])
 @login_require.require
 def user_userlist():
-    return render_template('userlist.html')
+    if session["role"] != "admin":
+        return redirect('/')
+    if request.method == "GET":
+        fields = ['id','name','name_cn','email','mobile','role','status']
+        res = DB().select_NoWhere(db_table,fields)
+        '''
+        res的格式如下:((1,jack,杰克,xxx@qq.com,123333,common),(2,mary,玛丽,xxx@qq.com,123333,common),...)
+        需要转换为格式:[{"id":123,"name":"jack"...},{"id":123,"name":"mary"...}]
+        便于页面for循环渲染
+        '''
+        users = []
+        for content in res:
+            tmp = dict((k,content[i]) for i,k in enumerate(fields))
+            users.append(tmp)
+        # 获取所有用户信息后 在页面展示
+        return render_template('userlist.html',users=users)
+
+@app.route('/user/delete',methods=['GET','POST'])
+@login_require.require
+def delete_user():
+    if session["role"] != "admin":
+        return redirect('/')
+    if request.method == "GET":
+        id = request.args.get('id')
+        where = {"id":id}
+        print where
+        content = DB().delete(db_table,where)
+        if content == 0:
+            return json.dumps({'code':0,'info':'删除成功'})
+        else:
+            return json.dumps({'code':1,'error':'删除失败'})
 
 #oldpwd,newpwd,ackpwd
 
