@@ -50,7 +50,7 @@
             <tr>
               <td class="text-center">{{user.name}}</td>
               <td class="text-center">{{user.name_cn}}</td>
-              {% if user.role == "admin" %}
+              {% if user.role == "admin" %}   <!-- 在页面端显示的转换 -->
                 <td class="text-center">管理员</td>
               {% else%}
                 <td class="text-center">普通用户</td>
@@ -64,7 +64,7 @@
               {% endif %}
               <td class="text-center">
                 <!-- 更新信息button -->
-                <button type="button" class="btn btn-info update" data-toggle="modal" data-target="#chinfoModal">更新</button>
+                <button  data-id="{{user.id}}" type="button" class="btn btn-info update" >更新</button>
                 <!-- 删除用户button -->
                 <button  data-id="{{user.id}}" type="button" class="btn btn-danger del">删除</button>
               </td>
@@ -73,6 +73,84 @@
           </tbody>
         </table>
         <!-- /用户列表 表格 -->
+
+<!-- 更新用户信息模态窗 -->
+      <div class="modal fade" id="chinfoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                  <h4 class="modal-title">更新用户信息</h4>
+                </div>
+                <div class="modal-body">
+                  <form id="updateOneForm" class="form-horizontal form-label-left">
+                    <!-- id input -->
+                    <input id="u_id" type="hidden" name="id"> <!-- 隐藏的id表单提交使用 -->
+                    <!-- /id input -->
+                    <!-- name input -->
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">用户名</label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <input id="u_name" type="text" class="form-control" disabled="disabled" name="name">
+                      </div>
+                     </div>
+                    <!-- /name input -->
+                    <!-- name_cn input -->
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">中文名</label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <input id="u_name_cn" type="text" class="form-control" name="name_cn">
+                      </div>
+                    </div>
+                    <!-- /name_cn input -->
+                    <!-- email input -->
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">邮箱</label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <input id="u_email" type="text" class="form-control" name="email">
+                      </div>
+                    </div>
+                    <!-- /email input -->
+                    <!-- mobile input -->
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">手机号</label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <input id="u_mobile" type="text" class="form-control" name="mobile">
+                      </div>
+                    </div>
+                    <!-- /mobile input -->
+                    <!-- role input -->
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">角色</label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+			            <select  id="u_role" class="form-control">
+				            <option value="admin">管理员</option>
+                            <option value="common">普通用户</option>
+                        </select>
+                      </div>
+                    </div>
+                    <!-- /role input -->
+                    <!-- status input -->
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">状态</label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+			            <select  id="u_status" class="form-control">
+				            <option value="0">启用</option>
+                            <option value="1">锁定</option>
+                        </select>
+                      </div>
+                    </div>
+                    <!-- /status input -->
+                  </form>
+                </div> <!-- /modal-body -->
+                <div class="modal-footer">
+                  <button data-dismiss="modal" class="btn btn-default" type="button">关闭</button>
+                  <button id="updateOnebutton" class="btn btn-primary" type="button">保存提交</button>
+                </div>
+              </div> <!-- /modal-content -->
+            </div> <!-- /modal-dialog -->
+      </div>
+<!-- /更新用户信息模态窗 -->
 
       </div> <!-- x_content -->
     </div> <!-- x_panel -->
@@ -129,6 +207,54 @@ $('.del').on("click",function(){  //更新密码不能通过ID选择器，因为
       }
     })
   }
+})
+
+
+//点击更新按钮通过id，进行ajax的get请求，获取数据后渲染模态窗内容
+$('.update').on("click",function(){
+    var user_id = $(this).attr('data-id')
+    var url = "/user/update?id=" + user_id
+    $.getJSON(url, function(data) {
+        console.log(data)
+        $('#u_id').val(data["id"])
+        $('#u_name').val(data["name"])
+        $('#u_name_cn').val(data["name_cn"])
+        $('#u_mobile').val(data["mobile"])
+        $('#u_email').val(data["email"])
+        $('#u_role').val(data["role"])
+        $('#u_status').val(data["status"])
+        $('#chinfoModal').modal('show')
+    })
+})
+
+// 点击模态窗时,更新数据,post请求
+$("#updateOnebutton").on('click',function(){
+  var str = $("#updateOneForm").serialize()
+  $.post('/user/update',str,function(data){
+    data = JSON.parse(data)
+    if (data['code'] == 0){
+      //$("#chinfoModal").modal('hide')
+      //swal("","更新成功","success");
+      //location.reload()
+      swal({
+        title: "",
+        text: "successful",
+        type:"success",
+        confirmButtonText:"确定"
+      }, function(){
+        $("#chinfoModal").modal('hide')
+        location.reload()
+      })
+    }else{
+      swal({
+        title: "",
+        text: "error",
+        type:"error",
+        confirmButtonText:"确定"
+      })
+    }
+  })
+  return false
 })
 
 </script>

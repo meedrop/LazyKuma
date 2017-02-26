@@ -16,14 +16,15 @@ db_table = 'Users'
 @app.route('/')
 #@app.route('/index')
 @login_require.require
-def userinfo():
-    name = session.get('name')
-    where = {'name':name}
-    fields = ['id','name','name_cn','email','mobile','role']
-    content = DB().check(db_table,fields,where)
-    user = dict((k,content[i]) for i,k in enumerate(fields))
-    print user
-    return render_template("userinfo.html",user=user)
+def userinfo():   # 该模块获取用户全局信息 保证个人中心展示
+    if request.method == "GET":
+        name = session.get('name')
+        where = {'name':name}
+        fields = ['id','name','name_cn','email','mobile','role']
+        content = DB().check(db_table,fields,where)
+        user = dict((k,content[i]) for i,k in enumerate(fields))
+        print user
+        return render_template("userinfo.html",user=user)
 
 # 用户登录页面
 @app.route('/login',methods=['GET','POST'])
@@ -72,8 +73,14 @@ def user_update():
             return json.dumps({'code':0,'info':'更新成功'})
         else:
             return json.dumps({'code':1,'error':'更新错误'})
-    if request.method == "GET":  # 更新信息
-        pass
+    if request.method == "GET":  # 更新信息栏 GET请求时,返回用户的信息进行渲染
+        id = request.args.get('id')
+        where = {'id':id}
+        fields = ['id','name','name_cn','email','mobile','role','status']
+        content = DB().check(db_table,fields,where)
+        user = dict((k,content[i]) for i,k in enumerate(fields))
+        print user
+        return json.dumps(user)
 
 # 个人中心页面更新密码
 @app.route('/user/updateOnepwd',methods=['GET','POST'])
