@@ -1,0 +1,243 @@
+{% extends "base.html"%}
+{% block pagetitle %}
+设备列表
+{% endblock%}
+
+{% block main %}
+<div class="row">
+  <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+      <div class="x_title">
+        <h2>列表详情</h2>
+        <ul class="nav navbar-right panel_toolbox">
+          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+          </li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#">Settings 1</a>
+              </li>
+              <li><a href="#">Settings 2</a>
+              </li>
+            </ul>
+          </li>
+          <li><a class="close-link"><i class="fa fa-close"></i></a>
+          </li>
+        </ul>
+        <div class="clearfix"></div>
+      </div> <!-- x_title -->
+      <div class="x_content">
+        <br>
+        <!-- 设备列表 表格 -->
+        <table id="datatable" class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th class="text-center">SID</th>
+              <th class="text-center">机房</th>
+              <th class="text-center">机柜号</th>
+              <th class="text-center">序列号</th>
+              <th class="text-center">型号</th>
+              <th class="text-center">配置</th>
+              <th class="text-center">操作</th>
+            </tr>
+          </thead>
+
+          <tbody>
+          {% for server in servers %}
+            <tr>
+              <td class="text-center">{{server.sid}}</td>
+              <td class="text-center">{{server.machine_room}}</td>
+              <td class="text-center">{{server.cabinet}}</td>
+              <td class="text-center">{{server.sn}}</td>
+              <td class="text-center">{{server.server_type}}</td>
+              <td class="text-center">{{server.configuration}}</td>
+              <td class="text-center">
+                <!-- 更新信息button -->
+                <button  data-id="{{server.sid}}" type="button" class="btn btn-info update" >更新</button>
+                <!-- 删除设备button -->
+                <button  data-id="{{server.sid}}" type="button" class="btn btn-danger del">删除</button>
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        <!-- /设备列表 表格 -->
+
+<!-- 更新设备信息模态窗 -->
+      <div class="modal fade" id="chinfoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                  <h4 class="modal-title">更新设备信息</h4>
+                </div>
+                <div class="modal-body">
+                  <form id="updateOneForm" class="form-horizontal form-label-left">
+                    <!-- sid input -->
+                    <input id="s_sid" type="hidden" name="sid"> <!-- 隐藏的id表单提交使用 -->
+                    <!-- /sid input -->
+
+                    <!-- machine_room input -->
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">机房</label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+			            <select  id="s_machine_room" class="form-control" name="machine_room">
+                            <option value="深圳二区">深圳二区</option>
+                            <option value="广州二区">广州二区</option>
+                            <option value="香港二区">香港二区</option>
+                        </select>
+                      </div>
+                    </div>
+                    <!-- /machine_room input -->
+
+                    <!-- cabinet input -->
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">机柜号</label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <input id="s_cabinet" type="text" class="form-control" name="cabinet">
+                      </div>
+                    </div>
+                    <!-- /cabinet input -->
+
+                    <!-- sn input -->
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">序列号</label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <input id="s_sn" type="text" class="form-control" name="sn">
+                      </div>
+                    </div>
+                    <!-- /sn input -->
+
+                    <!-- server_type input -->
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">型号</label>
+                      <div class="col-md-9 col-sm-9 col-xs-12">
+                        <input id="s_server_type" type="text" class="form-control" name="server_type">
+                      </div>
+                    </div>
+                    <!-- /server_type input -->
+
+                    <!-- configuration input -->
+                    <div class="form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12">配置<span class="required">*</span>
+                      </label>
+                      <div class="col-md-6 col-sm-6 col-xs-12">
+                        <textarea id="s_configuration" name="configuration" class="form-control" rows="3"></textarea>
+                      </div>
+                    </div>
+                    <!-- /configuration input -->
+                  </form>
+                </div> <!-- /modal-body -->
+                <div class="modal-footer">
+                  <button data-dismiss="modal" class="btn btn-default" type="button">关闭</button>
+                  <button id="updateOnebutton" class="btn btn-primary" type="button">保存提交</button>
+                </div>
+              </div> <!-- /modal-content -->
+            </div> <!-- /modal-dialog -->
+      </div>
+<!-- /更新设备信息模态窗 -->
+
+      </div> <!-- x_content -->
+    </div> <!-- x_panel -->
+  </div>
+</div> <!-- row -->
+
+{% endblock %}
+
+{% block js %}
+<script>
+// datetable中文配置
+$('#datatable').dataTable({
+        "bDestroy":true, //一旦datatable的数据有增加或者删除，会销毁原有的，重新获取
+        "language": {
+                "lengthMenu": "每页 _MENU_ 条记录",
+                "zeroRecords": "没有找到记录",
+                "sInfo": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+                "infoEmpty": "无记录",
+                "infoFiltered": "(从 _MAX_ 条记录过滤)",
+                "sSearch": "搜索:",
+                "oPaginate": {
+                "sFirst": "首页",
+                "sPrevious": "上一页",
+                "sNext": "下一页",
+                "sLast": "末页"
+                }
+        },
+        "order": [[ 1, "asc" ]]
+});
+
+// 删除设备
+$('.del').on("click",function(){  //更新设备不能通过ID选择器，因为做了for循环，只能通过class里定义的类del来做
+  var s_id =  $(this).attr('data-id')
+  var url = "/server/delete?id=" + s_id
+  if(confirm("确认删除？")){
+    $.getJSON(url,function(data){
+      console.log(data)  //打印调试
+      if (data['code'] == 0){
+        swal({
+          title: "",
+          text: "successful",
+          type:"success",
+          confirmButtonText:"确定"
+        }, function(){
+          location.reload()
+        })
+      }else{
+        swal({
+          title: "",
+          text: "error",
+          type:"error",
+          confirmButtonText:"确定"
+        })
+      }
+    })
+  }
+})
+
+
+//点击更新按钮通过id，进行ajax的get请求，获取数据后渲染模态窗内容
+$('.update').on("click",function(){
+    var s_id = $(this).attr('data-id')
+    var url = "/server/updateInfo?id=" + s_id
+    $.getJSON(url, function(data) {
+        console.log(data)
+        $('#s_sid').val(data["sid"])
+        $('#s_machine_room').val(data["machine_room"])
+        $('#s_cabinet').val(data["cabinet"])
+        $('#s_sn').val(data["sn"])
+        $('#s_server_type').val(data["server_type"])
+        $('#s_configuration').val(data["configuration"])
+        $('#chinfoModal').modal('show')  //渲染完毕模态窗数据后展示模态窗
+    })
+})
+
+// 点击模态窗时,更新数据,post请求
+$("#updateOnebutton").on('click',function(){
+  var str = $("#updateOneForm").serialize()
+  $.post('/server/updateInfo',str,function(data){
+    data = JSON.parse(data)
+    if (data['code'] == 0){
+      swal({
+        title: "",
+        text: "successful",
+        type:"success",
+        confirmButtonText:"确定"
+      }, function(){
+        $("#chinfoModal").modal('hide')
+        location.reload()
+      })
+    }else{
+      swal({
+        title: "",
+        text: "error",
+        type:"error",
+        confirmButtonText:"确定"
+      })
+    }
+  })
+  return false
+})
+
+</script>
+{% endblock %}
+

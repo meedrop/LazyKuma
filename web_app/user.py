@@ -13,7 +13,7 @@ logs = logstdout.WriteLog('mylog')
 db_table = 'Users'
 
 # 个人中心页面
-@app.route('/')
+@app.route('/',methods=['GET','POST'])
 #@app.route('/index')
 @login_require.require
 def userinfo():   # 该模块获取用户全局信息 保证个人中心展示
@@ -152,6 +152,7 @@ def add_uer():
         return render_template("adduser.html")
     if request.method == "POST":
         user = dict((k,v[0]) for k,v in dict(request.form).items())
+        user['password'] = hashlib.md5(user['password']+salt).hexdigest()
         fields = ['name','name_cn','password','email','mobile','role','status']
         content = DB().insert(db_table,fields,user)
         if content == 0:
