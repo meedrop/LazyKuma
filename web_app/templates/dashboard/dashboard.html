@@ -120,28 +120,113 @@
         <!-- page content -->
         <div class="right_col" role="main">
           <div class="">
-            <div class="page-title">
-              <div class="title_left">
-                <h3>
-                  {% block pagetitle%}
-		          {% endblock%}
-                </h3>
-              </div>
+             <div class="row top_tiles">
 
-              <div class="title_right">
-                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                  <div class="input-group">
-                    <input type="text" class="form-control" placeholder="搜索..">
-                    <span class="input-group-btn">
-                              <button class="btn btn-default" type="button">Go!</button>
-                    </span>
+<!-- 展示block -->
+        <!-- top1 -->
+        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="tile-stats">
+                  <div class="count" style="color:lightskyblue" align="center">{{ info.userSum }}</div>
+                  <h3 align="center">用户总数</h3>
+            </div>
+        </div>
+        <!-- /top1 -->
+
+        <!-- top2 -->
+        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="tile-stats">
+                  <div class="count" style="color:lightskyblue" align="center">{{ info.serverSum }}</div>
+                  <h3 align="center">设备总数</h3>
+            </div>
+        </div>
+        <!-- /top2 -->
+
+        <!-- top3 -->
+        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="tile-stats">
+                  <div class="count" style="color:lightgreen" align="center">{{ info.serverRunning }}</div>
+                  <h3 align="center">运行中</h3>
+            </div>
+        </div>
+        <!-- /top3 -->
+
+        <!-- top4 -->
+        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="tile-stats">
+                  <div class="count" style="color:lightcoral" align="center">{{ info.serverDown }}</div>
+                  <h3 align="center">已关机</h3>
+            </div>
+        </div>
+        <!-- /top4 -->
+      </div><!-- row top_tiles -->
+
+      <!-- big row -->
+      <div class="row">
+          <!-- main_alarm dom-->
+          <div class="col-md-8 col-sm-8 col-xs-12">
+              <div class="x_panel">
+                  <div class="x_title">
+                    <h2>监控告警统计</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a href="#">Settings 1</a>
+                          </li>
+                          <li><a href="#">Settings 2</a>
+                          </li>
+                        </ul>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div> <!-- x_title -->
+                  <div class="x_content">
+
+                    <div id="main_alarm" style="height:350px;"></div>
+
+                  </div>
+              </div> <!-- x_panel -->
+          </div>
+          <!-- main_alarm dom-->
+
+          <!-- main_fail dom-->
+          <div class="col-md-4 col-sm-4 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Mini Pie</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a href="#">Settings 1</a>
+                          </li>
+                          <li><a href="#">Settings 2</a>
+                          </li>
+                        </ul>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+
+                    <div id="main_fail" style="height:350px;"></div>
+
                   </div>
                 </div>
-              </div>
-            </div>
-            <div class="clearfix"></div>
-        {% block main %}
-        {% endblock %}
+          </div>
+          <!-- main_fail dom-->
+      </div> <!-- /row -->
+      <!-- /big row>
+<!-- /展示block -->
+
           </div>
         </div>
         <!-- /page content -->
@@ -224,7 +309,57 @@
 
     <!-- gauge.js -->
     <!-- /gauge.js -->
-    {% block js %}
-    {% endblock %}
+
+<!-- js 展示 -->
+<script>
+    // 监控告警统计
+    var myChart1 = echarts.init(document.getElementById('main_alarm'),'macarons');
+    option1 = {
+    title : {
+        show: false
+        //text: '',
+        //subtext: '',
+        //x:'center'
+    },
+    tooltip : {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
+   },
+    legend: {
+        orient : 'vertical',
+        x : 'left',
+        data:['数据库','网络','系统','应用','日志']
+    },
+    calculable : true,
+    series : [
+        {
+            name:'告警详情',
+            type:'pie',
+            radius : '60%',
+            center: ['50%', '50%'],
+            data:[
+                {value:40, name:'数据库'},
+                {value:30, name:'网络'},
+                {value:20, name:'系统'},
+                {value:15, name:'应用'},
+                {value:100, name:'日志'},
+            ],
+            itemStyle:{
+            normal:{
+                  label:{
+                    show: true,
+                    formatter: '{b} : {c} ({d}%)'
+                  },
+                  labelLine :{show:true}
+                }
+            }
+        }
+    ]
+};
+myChart1.setOption(option1);
+
+</script>
+
+<!-- /js 展示 -->
   </body>
 </html>

@@ -1,0 +1,78 @@
+{% extends "base.html"%}
+{% block pagetitle %}
+    新增用户
+{% endblock%}
+
+{% block main %}
+ <!-- page content -->
+        <div class="right_col" role="main">
+          <div class="">
+            <div class="row top_tiles">
+              <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="tile-stats">
+                  <div class="icon"><i class="fa fa-caret-square-o-right"></i></div>
+                  <div class="count">179</div>
+                  <h3>New Sign ups</h3>
+                  <p>Lorem ipsum psdea itgum rixt.</p>
+                </div>
+              </div>
+              <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="tile-stats">
+                  <div class="icon"><i class="fa fa-comments-o"></i></div>
+                  <div class="count">179</div>
+                  <h3>New Sign ups</h3>
+                  <p>Lorem ipsum psdea itgum rixt.</p>
+                </div>
+              </div>
+              <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="tile-stats">
+                  <div class="icon"><i class="fa fa-sort-amount-desc"></i></div>
+                  <div class="count">179</div>
+                  <h3>New Sign ups</h3>
+                  <p>Lorem ipsum psdea itgum rixt.</p>
+                </div>
+              </div>
+              <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="tile-stats">
+                  <div class="icon"><i class="fa fa-check-square-o"></i></div>
+                  <div class="count">179</div>
+                  <h3>New Sign ups</h3>
+                  <p>Lorem ipsum psdea itgum rixt.</p>
+                </div>
+              </div>
+            </div>
+
+{% endblock %}
+
+{% block js %}
+<script>
+//点击提交表单按钮时 post注册表单请求
+$("#addUserButton").on('click',function(){
+  var str = $("#addUserForm").serialize()
+  $.post('/user/add',str,function(data){
+    data = JSON.parse(data)
+    if (data['code'] == 0){
+      swal({
+        title: "",
+        text: "successful",
+        type:"success",
+        confirmButtonText:"确定"
+      }, function(){
+        $("#chinfoModal").modal('hide')
+        //location.reload()
+        location.href='/user/userlist'
+      })
+    }else{
+      swal({
+        title: "",
+        text: "error",
+        type:"error",
+        confirmButtonText:"确定"
+      })
+    }
+  })
+  return false
+})
+
+</script>
+{% endblock %}
