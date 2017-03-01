@@ -12,8 +12,14 @@ salt = "$z%5^u3I"
 logs = logstdout.WriteLog('mylog')
 db_table = 'Users'
 
-# 个人中心页面
+# 登入时跳转到dashboard
 @app.route('/',methods=['GET','POST'])
+@login_require.require
+def go_2_dashboard():
+    return redirect('/dashboard/show')
+
+# 个人中心页面
+@app.route('/user/userinfo',methods=['GET','POST'])
 #@app.route('/index')
 @login_require.require
 def userinfo():   # 该模块获取用户全局信息 保证个人中心展示
