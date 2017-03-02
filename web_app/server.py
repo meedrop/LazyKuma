@@ -36,18 +36,23 @@ def add_server():
             return json.dumps({'code':1,'error':'添加失败'})
 
 # 添加设备状态
-@app.route('/server/add',methods=['GET','POST'])
+@app.route('/server/addStatus',methods=['GET','POST'])
 @login_require.require
-def add_server():
+def add_serverStatus():
     if session["role"] != "admin":
         return redirect('/')
     if request.method == "GET":
-        res = DB().select_NoWhere(server_info_table,"*")
-        sids = []
-        for content in res:
-            tmp = dict((k,content[i]) for i,k in enumerate(fields))
-            sids.append(tmp)
-        return render_template("/server/addserver_status.html")
+        res = DB().select_NoWhere(server_info_table,["sid"]) # 查出sid的sid渲染添加
+        sids = [ content[0] for content in res]
+        return render_template("/server/addserver_status.html",sids=sids)
+    if request.method == "POST":
+        servers = dict((k,v[0]) for k,v in dict(request.form).items()) # 获取到所有post数据插入server_status表
+        fields2 = ['sid','server_name','status','ip','services']
+        content2 = DB().insert(server_status_table,fields2,servers)
+        if content2 == 0:
+            return json.dumps({'code':0,'info':'添加成功'})
+        else:
+            return json.dumps({'code':1,'error':'添加失败'})
 
 
 # 设备信息列表页面
@@ -67,9 +72,9 @@ def server_list():
         return render_template("/server/serverlist.html",servers=servers)
 
 # 设备状态列表页面
-@app.route('/server/liststatus',methods=['GET','POST'])
+@app.route('/server/listStatus',methods=['GET','POST'])
 @login_require.require
-def server_liststatus():
+def server_listStatus():
     if session["role"] != "admin":
         return redirect('/')
     if request.method == "GET":
@@ -134,3 +139,25 @@ def server_updateInfo():
         server = dict((k,content[i]) for i,k in enumerate(fields))
         print server
         return json.dumps(server)
+
+# 更新设备状态
+@app.route('/server/updateStatus',methods=['GET','POST'])
+@login_require.require
+def server_updateStatus():
+    if request.method == "POST": # 接收前端修改信息的post请求
+        status = dict((k,v[0]) for k,v in dict(request.form).items())
+        print status
+        where = {'sid':status['sid']}
+        content = DB().update(server_status_table,status,where)
+        if content == 0:
+            return json.dumps({'code':0,'info':'更新成功'})
+        else:
+            return json.dumps({'code':1,'error':'更新错误'})
+    if request.method == "GET":  # 更新信息栏 GET请求时,返回用户的信息进行渲染
+        id = request.args.get('id')
+        where = {'sid':id}
+        fields = ['sid','server_name','status','ip','services']
+        content = DB().check(server_status_table,fields,where)
+        status = dict((k,content[i]) for i,k in enumerate(fields))
+        print status
+        return json.dumps(status)
