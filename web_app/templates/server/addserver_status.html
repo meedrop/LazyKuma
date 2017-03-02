@@ -1,0 +1,176 @@
+{% extends "base.html"%}
+{% block pagetitle %}
+    添加设备状态
+{% endblock%}
+
+{% block main %}
+<div class="row">
+  <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+      <div class="x_title">
+        <h2>填写资料</h2>
+        <ul class="nav navbar-right panel_toolbox">
+          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+          </li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#">Settings 1</a>
+              </li>
+              <li><a href="#">Settings 2</a>
+              </li>
+            </ul>
+          </li>
+          <li><a class="close-link"><i class="fa fa-close"></i></a>
+          </li>
+        </ul>
+        <div class="clearfix"></div>
+      </div> <!-- /x_title -->
+      <div class="x_content">
+        <br />
+        <form id="addServerForm" data-parsley-validate class="form-horizontal form-label-left">
+
+          <!-- machine_room_input -->
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">机房</label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <select  class="form-control" name="machine_room">
+                    <option value="深圳二区">深圳二区</option>
+                    <option value="广州二区">广州二区</option>
+                    <option value="香港二区">香港二区</option>
+                </select>
+            </div>
+          </div>
+          <!-- /machine_room_input -->
+
+          <!-- cabinet -->
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">机柜号<span class="required">*</span>
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <input type="text" name="cabinet" required="required" class="form-control col-md-7 col-xs-12">
+            </div>
+          </div>
+          <!-- /cabinet -->
+
+          <!-- sn -->
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">序列号<span class="required">*</span>
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <input type="text" name="sn" required="required" class="form-control col-md-7 col-xs-12">
+            </div>
+          </div>
+          <!-- /sn -->
+
+          <!-- server_type -->
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">型号<span class="required">*</span>
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <input type="text" name="server_type" required="required" class="form-control col-md-7 col-xs-12">
+            </div>
+          </div>
+          <!-- /server_type -->
+
+          <!-- configuration -->
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">配置<span class="required">*</span>
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <textarea name="configuration" class="form-control" rows="3" placeholder='双核 16G'></textarea>
+            </div>
+          </div>
+          <!-- /configuration -->
+
+          <!-- server_name -->
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">主机名
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <input type="text" name="server_name" required="required" class="form-control col-md-7 col-xs-12">
+            </div>
+          </div>
+          <!-- /server_name -->
+
+          <!-- status -->
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">状态<span class="required">*</span></label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <select  class="form-control" name="status">
+                    <option value="0">运行中</option>
+                    <option value="1">关机</option>
+                </select>
+            </div>
+          </div>
+          <!-- /status -->
+
+          <!-- ip -->
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">ip地址
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <input type="text" name="ip" required="required" class="form-control col-md-7 col-xs-12">
+            </div>
+          </div>
+          <!-- /ip -->
+
+          <!-- services -->
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">运行服务
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <input type="text" name="services" required="required" class="form-control col-md-7 col-xs-12">
+            </div>
+          </div>
+          <!-- /services -->
+
+          <div class="ln_solid"></div>
+          <div class="form-group">
+            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+              <a href="/servers/list">
+                <button type="button" class="btn btn-primary" >取消</button>
+              </a>
+              <button id="addServerButton" type="submit" class="btn btn-success">提交</button>
+            </div>
+          </div>
+
+        </form> <!-- addServerForm -->
+      </div> <!-- x_content  -->
+    </div> <!-- /x_panel -->
+  </div>
+</div> <!-- /row -->
+{% endblock %}
+
+{% block js %}
+<script>
+//点击提交表单按钮时 post注册表单请求
+$("#addServerButton").on('click',function(){
+  var str = $("#addServerForm").serialize()
+  $.post('/server/add',str,function(data){
+    data = JSON.parse(data)
+    if (data['code'] == 0){
+      swal({
+        title: "",
+        text: "successful",
+        type:"success",
+        confirmButtonText:"确定"
+      }, function(){
+        $("#chinfoModal").modal('hide')
+        //location.reload()
+        location.href='/server/list'
+      })
+    }else{
+      swal({
+        title: "",
+        text: "error",
+        type:"error",
+        confirmButtonText:"确定"
+      })
+    }
+  })
+  return false
+})
+
+</script>
+{% endblock %}

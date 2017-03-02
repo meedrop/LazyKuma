@@ -12,7 +12,7 @@ logs = logstdout.WriteLog('mylog')
 server_info_table = 'Servers_Info'
 server_status_table = 'Servers_Status'
 
-# 添加设备
+# 添加设备信息
 @app.route('/server/add',methods=['GET','POST'])
 @login_require.require
 def add_server():
@@ -35,6 +35,21 @@ def add_server():
         else:
             return json.dumps({'code':1,'error':'添加失败'})
 
+# 添加设备状态
+@app.route('/server/add',methods=['GET','POST'])
+@login_require.require
+def add_server():
+    if session["role"] != "admin":
+        return redirect('/')
+    if request.method == "GET":
+        res = DB().select_NoWhere(server_info_table,"*")
+        sids = []
+        for content in res:
+            tmp = dict((k,content[i]) for i,k in enumerate(fields))
+            sids.append(tmp)
+        return render_template("/server/addserver_status.html")
+
+
 # 设备信息列表页面
 @app.route('/server/list',methods=['GET','POST'])
 @login_require.require
@@ -51,7 +66,7 @@ def server_list():
         # 获取所有用户信息后 在页面展示
         return render_template("/server/serverlist.html",servers=servers)
 
-# 设备状态页面
+# 设备状态列表页面
 @app.route('/server/liststatus',methods=['GET','POST'])
 @login_require.require
 def server_liststatus():
@@ -119,31 +134,3 @@ def server_updateInfo():
         server = dict((k,content[i]) for i,k in enumerate(fields))
         print server
         return json.dumps(server)
-
-
-'''
-
-/*SERVER LIST TABLE*/
-CREATE TABLE Servers_Info(
-	sid int(20) NOT NULL AUTO_INCREMENT COMMENT "自增服务器ID",
-	machine_room varchar(30) DEFAULT NULL COMMENT "机房",
-	cabinet int(10) DEFAULT NULL COMMENT "机柜号",
-	sn varchar(100) NOT NULL COMMENT "设备序列号",
-	server_type varchar(64) NOT NULL COMMENT "设备型号",
-	configuration varchar(255) NOT NULL COMMENT "配置",
-	PRIMARY KEY (sid),
-	UNIQUE KEY uni_sn (SN)
-) ENGINE=InnoDB CHARSET=utf8 COMMENT='设备信息表'
-
-/*SERVER LIST STATUS*/
-CREATE TABLE Servers_Status(
-	sid int(20) NOT NULL AUTO_INCREMENT COMMENT "外键服务器ID",
-	server_name varchar(50) DEFAULT NULL COMMENT "主机名 ",
-	status int(10) DEFAULT NULL COMMENT "状态",
-	ip varchar(255) DEFAULT NULL COMMENT "ip地址",
-	services varchar(64) DEFAULT NULL COMMENT "运行服务",
-	PRIMARY KEY (sid),
-	UNIQUE KEY uni_ip (ip),
-	CONSTRAINT FOREIGN KEY (sid) REFERENCES Servers_Info(sid) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB CHARSET=utf8 COMMENT='设备状态表'
-'''

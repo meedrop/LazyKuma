@@ -28,6 +28,11 @@
       </div> <!-- x_title -->
       <div class="x_content">
         <br>
+       <!-- 添加server状态button -->
+          <a href="/server/addStatus">
+            <button type="button" class="btn btn-success pull-right">添加状态</button>
+          </a>
+        <!-- /添加server状态button -->
         <!-- 设备状态 表格 -->
         <table id="datatable" class="table table-striped table-bordered">
           <thead>
@@ -54,12 +59,29 @@
               {% endif %}
               <td class="text-center">{{server.services}}</td>
               <td class="text-center">
-                <!-- 关机button -->
-                <button  data-id="{{server.sid}}" type="button" class="btn btn-warning shutdown" >关机</button>
-                <!-- 重启button -->
-                <button  data-id="{{server.sid}}" type="button" class="btn btn-info reboot">重启</button>
-                <!-- 删除button -->
-                <button  data-id="{{server.sid}}" type="button" class="btn btn-danger del">删除</button>
+                  <!-- 关机button -->
+                  <div class="btn-group">
+                      <button  data-id="{{server.sid}}" type="button" class="btn btn-warning shutdown" >关机</button>
+                  </div>
+
+                  <!-- 重启button -->
+                  <div class="btn-group">
+                      <button  data-id="{{server.sid}}" type="button" class="btn btn-info reboot">重启</button>
+                  </div>
+
+                  <!-- 更多下拉 -->
+                  <div class="btn-group">
+                      <button type="button" class="btn btn-dark">更多</button>
+                      <button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                      </button>
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a data-id="{{server.sid}}" class="update" >更新</a></li>
+                        <li><a data-id="{{server.sid}}" class="del" >删除</a></li>
+                      </ul>
+                  </div>
+                  <!-- /更多下拉 -->
               </td>
             </tr>
           {% endfor %}
