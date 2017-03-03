@@ -37,6 +37,6 @@ python run.py
 * 用户界面
 ![](http://ofus5xwey.bkt.clouddn.com/lazy_2.png)
 * 资产界面1
-![资产列表](http://ofus5xwey.bkt.clouddn.com/lazy_3.png)
+![](http://ofus5xwey.bkt.clouddn.com/lazy_3.png)
 * 资产界面2
-![资产列表](http://ofus5xwey.bkt.clouddn.com/lazy4.png)
+![](http://ofus5xwey.bkt.clouddn.com/lazy4.png)
