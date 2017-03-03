@@ -30,7 +30,13 @@ python run.py
 ## 5. 访问实例
 通过`http://ip:9999`访问登录即可
 下面是一些页面示例：
-![展示界面](http://ofus5xwey.bkt.clouddn.com/lazy1.png)
-![用户界面](http://ofus5xwey.bkt.clouddn.com/lazy2.png)
-![资产列表](http://ofus5xwey.bkt.clouddn.com/lazy3.png)
+
+
+* 展示界面
+![](http://ofus5xwey.bkt.clouddn.com/lazy1.png)
+* 用户界面
+![](http://ofus5xwey.bkt.clouddn.com/lazy_2.png)
+* 资产界面1
+![资产列表](http://ofus5xwey.bkt.clouddn.com/lazy_3.png)
+* 资产界面2
 ![资产列表](http://ofus5xwey.bkt.clouddn.com/lazy4.png)
