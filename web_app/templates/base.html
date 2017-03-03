@@ -53,7 +53,7 @@
               </div>
               <div class="profile_info">
                 <span>Welcome,</span>
-                <h2>meedrop</h2>
+                <h2 id="username"></h2>
               </div>
             </div>
             <!-- /menu profile quick info -->
@@ -230,6 +230,15 @@
 
     <!-- gauge.js -->
     <!-- /gauge.js -->
+
+    <!-- 获取用户名 -->
+    <script>
+        $.getJSON('/user/get_name', function(data) {
+            console.log(data)
+            $('#username').html(data)
+         })
+    </script>
+    <!-- 获取用户名 -->
     {% block js %}
     {% endblock %}
   </body>

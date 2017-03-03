@@ -151,7 +151,7 @@ def delete_user():
 # 添加用户
 @app.route('/user/add',methods=['GET','POST'])
 @login_require.require
-def add_uer():
+def add_user():
     if session["role"] != "admin":
         return redirect('/')
     if request.method == "GET":
@@ -174,10 +174,8 @@ def logout():
         session.pop('role',None)
     return redirect('/login')
 
-#oldpwd,newpwd,ackpwd
-
-
-
-
-# 访问login的时候，如果有session就跳到个人中心界面，没有就提示登录
-# 增加账户锁定功能
+# 获取用户名
+@app.route('/user/get_name',methods=['GET','POST'])
+def get_username():
+    if request.method == "GET":
+        return json.dumps(session['name'])
