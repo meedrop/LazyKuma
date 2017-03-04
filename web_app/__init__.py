@@ -12,3 +12,4 @@ app.secret_key = 'as$11#@!f3sf23a'
 import user
 import server
 import dashboard
+import zabbix

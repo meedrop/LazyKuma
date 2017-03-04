@@ -1,0 +1,149 @@
+{% extends "base.html"%}
+{% block pagetitle %}
+    zabbix二次开发
+{% endblock%}
+
+{% block main %}
+      <!-- big row -->
+      <div class="row">
+          <!-- main_cpuidle dom-->
+          <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>CPU空闲率</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a href="#">Settings 1</a>
+                          </li>
+                          <li><a href="#">Settings 2</a>
+                          </li>
+                        </ul>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+
+                    <div id="main_cpuidle" style="height:350px;"></div>
+
+                  </div>
+                </div>
+          </div>
+      </div>
+      <!-- main_cpuidle dom-->
+
+{% endblock %}
+
+{% block js %}
+<script>
+// CPU idle 展示
+var myChart = echarts.init(document.getElementById('main_cpuidle'),'macarons');
+var time_array = new Array();
+var value_array = new Array();
+
+option = {
+    title : {
+        show: true,
+        text: 'Host: [Zabbix_Server] ',
+        textStyle: {
+            color: "#272727"
+        },
+        subtext: '',
+    },
+    tooltip : {
+        trigger: 'axis',
+        formatter: "{b} <br/>{a} :  {c}%"
+    },
+    grid: {
+        left: "5%",
+        right: "8%",
+        top: "20%",
+        bottom: "10%",
+    },
+    legend: {
+        data:['CPU空闲率']
+    },
+    calculable : true,
+    xAxis : [
+        {
+            type : 'category',
+            boundaryGap : false,
+            axisLine: {
+              lineStyle: {
+                  color: "#272727"
+              }
+            },
+            data : time_array
+        }
+    ],
+    yAxis : [
+        {
+            name: "百分比%",
+            type : 'value',
+            axisLine: {
+              lineStyle: {
+                  color: "#272727"
+              }
+            }
+        }
+    ],
+    series : [
+        {
+            name:'CPU空闲率',
+            type:'line',
+            smooth:true,
+            itemStyle: {
+                normal: {
+                    areaStyle: {type: 'default'},
+                    color: "#D6CCEA",
+                }
+            },
+            lineStyle: {
+                normal:{
+                    color: "#B6A2DE",
+
+                }
+            },
+            data: value_array
+        }
+    ]
+};
+
+// 第一次进入直接展示数据
+$.getJSON('/zabbix/data',function(datas) {
+    console.log(datas)
+    for (var i = 0; i < datas.length; i++) {  //创建时间数组和值数组
+        time_array.push(datas[i].clock)
+        value_array.push(datas[i].value)
+    }
+    console.log(time_array)
+    console.log(value_array)
+    myChart.setOption(option)
+
+});
+
+
+// 每5秒请求一次数据
+setInterval(function(){
+    $.getJSON('/zabbix/data',function(datas){
+        console.log(datas)
+        var newtime = datas[datas.length -1].clock  //获取x轴最新数据
+        var newvalue = datas[datas.length -1].value // 获取y轴最新数据
+        console.log(newtime)
+        console.log(newvalue)
+        var data0 = option.series[0].data;
+        var data1 = option.xAxis[0].data;
+        data0.push(newvalue)   // y轴最新数据添加到数组里
+        data1.push(newtime)    // x轴最新数据添加到数组里
+        myChart.setOption(option);
+    })
+},30000);
+
+</script>
+{% endblock %}
