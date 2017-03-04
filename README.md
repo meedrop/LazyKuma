@@ -47,4 +47,4 @@ zabbix展示使用restful api获取监控数据实时展示
 * 资产界面1
 ![](http://ofus5xwey.bkt.clouddn.com/lazy_3.png)
 * zabbix监控界面
-![](http://ofus5xwey.bkt.clouddn.com/lazy5.png)
+![](http://ofus5xwey.bkt.clouddn.com/lazy_5.png)
