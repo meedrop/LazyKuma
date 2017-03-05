@@ -35,7 +35,7 @@ zabbix展示使用restful api获取监控数据实时展示
 
 ```
 
-## 4. 访问实例
+## 6. 访问实例
 通过`http://ip:9999`访问登录即可
 下面是一些页面示例：
 
@@ -44,7 +44,7 @@ zabbix展示使用restful api获取监控数据实时展示
 ![](http://ofus5xwey.bkt.clouddn.com/lazy1.png)
 * 用户界面
 ![](http://ofus5xwey.bkt.clouddn.com/lazy_2.png)
-* 资产界面1
+* 资产界面
 ![](http://ofus5xwey.bkt.clouddn.com/lazy_3.png)
 * zabbix监控界面
 ![](http://ofus5xwey.bkt.clouddn.com/lazy_5.png)

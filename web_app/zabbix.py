@@ -6,6 +6,7 @@ from flask import Flask,request,render_template,redirect,session
 from tools import login_require,logstdout
 import datetime,json
 import hashlib
+import traceback
 import time
 from zabbix_tool import zabbix
 
@@ -26,8 +27,12 @@ def zabbix_monitor():
 @login_require.require
 def zabbix_data():
     if request.method == "GET":
-        hostids = zabbix().host_get(hosts)[0]["hostid"]
-        itemid = zabbix().item_get(hostids,key)[0]["itemid"]
+        try:
+            logs.info("获取hostid,itemid...")
+            hostids = zabbix().host_get(hosts)[0]["hostid"]
+            itemid = zabbix().item_get(hostids,key)[0]["itemid"]
+        except:
+            logs.error("Error: 获取失败! %s" % (traceback.format_exc()))
         onehour_before = int(time.time()-3600) # 设置获取监控数据时间为1小时
         now = int(time.time())
         data = zabbix().history_get(itemid,onehour_before,now)
