@@ -39,6 +39,7 @@ zabbix展示使用restful api获取监控数据实时展示
 通过`http://ip:9999`访问登录即可
 下面是一些页面示例：
 
+`七牛云原图床已挂，图片待后续再上传`
 
 * 展示界面
 ![](http://ofus5xwey.bkt.clouddn.com/lazy1.png)
